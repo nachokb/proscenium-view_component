@@ -18,5 +18,12 @@ module Proscenium::ViewComponent
         tag.div content || 'loading...'
       end
     end
+
+    def virtual_path
+      @virtual_path ||= begin
+        paths = Proscenium::Resolver.resolve(self.class.source_path.sub_ext('.jsx').to_s)
+        paths.is_a?(Array) ? paths.find { |x| x.ends_with?('.js') } : paths
+      end
+    end
   end
 end
